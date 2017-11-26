@@ -83,9 +83,11 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_home_home_component__ = __webpack_require__("../../../../../src/app/components/home/home.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_doc_doc_component__ = __webpack_require__("../../../../../src/app/components/doc/doc.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_albums_albums_component__ = __webpack_require__("../../../../../src/app/components/albums/albums.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_genres_service__ = __webpack_require__("../../../../../src/app/services/genres.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_albums_service__ = __webpack_require__("../../../../../src/app/services/albums.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_album_detail_album_detail_component__ = __webpack_require__("../../../../../src/app/components/album-detail/album-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_chat_room_chat_room_component__ = __webpack_require__("../../../../../src/app/components/chat-room/chat-room.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_album_detail_album_detail_component__ = __webpack_require__("../../../../../src/app/components/album-detail/album-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_genres_service__ = __webpack_require__("../../../../../src/app/services/genres.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_albums_service__ = __webpack_require__("../../../../../src/app/services/albums.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_chat_rooms_service__ = __webpack_require__("../../../../../src/app/services/chat-rooms.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -104,6 +106,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 // service
 
 
@@ -111,7 +115,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var appRouter = [
     { path: "", component: __WEBPACK_IMPORTED_MODULE_7__components_home_home_component__["a" /* HomeComponent */] },
     { path: "albums", component: __WEBPACK_IMPORTED_MODULE_9__components_albums_albums_component__["a" /* AlbumsComponent */] },
-    { path: "doc", component: __WEBPACK_IMPORTED_MODULE_8__components_doc_doc_component__["a" /* DocComponent */] }
+    { path: "doc", component: __WEBPACK_IMPORTED_MODULE_8__components_doc_doc_component__["a" /* DocComponent */] },
+    { path: "chatroom", component: __WEBPACK_IMPORTED_MODULE_10__components_chat_room_chat_room_component__["a" /* ChatRoomComponent */] }
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -126,7 +131,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__components_home_home_component__["a" /* HomeComponent */],
             __WEBPACK_IMPORTED_MODULE_8__components_doc_doc_component__["a" /* DocComponent */],
             __WEBPACK_IMPORTED_MODULE_9__components_albums_albums_component__["a" /* AlbumsComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__components_album_detail_album_detail_component__["a" /* AlbumDetailComponent */]
+            __WEBPACK_IMPORTED_MODULE_11__components_album_detail_album_detail_component__["a" /* AlbumDetailComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__components_chat_room_chat_room_component__["a" /* ChatRoomComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -136,8 +142,9 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forRoot(appRouter)
         ],
         providers: [
-            __WEBPACK_IMPORTED_MODULE_10__services_genres_service__["a" /* GenresService */],
-            __WEBPACK_IMPORTED_MODULE_11__services_albums_service__["a" /* AlbumsService */]
+            __WEBPACK_IMPORTED_MODULE_12__services_genres_service__["a" /* GenresService */],
+            __WEBPACK_IMPORTED_MODULE_14__services_chat_rooms_service__["a" /* ChatRoomsService */],
+            __WEBPACK_IMPORTED_MODULE_13__services_albums_service__["a" /* AlbumsService */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
     })
@@ -298,6 +305,112 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/chat-room/chat-room.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/chat-room/chat-room.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-4\" *ngFor=\"let c of chatroom\" (click)=\"goDetail(c.chat_room_id)\">\n            <div class=\"card\">\n                {{ c.chat_room_name }}\n            </div>\n        </div>\n    </div>\n    <hr>\n    <div class=\"row\">\n        <div class=\"col-md-6\">\n            <div class=\"row\">\n               radio\n            </div>\n        </div>\n        <div class=\"col-md-6\">\n            <ul class=\"list-group\">\n                <li class=\"list-group-item active\">\n                    <form novalidate [formGroup]=\"myForm\" (ngSubmit)=\"send()\">\n                        <div class=\"input-group\">\n                            <input type=\"text\" formControlName=\"message\" placeholder=\"พิมพ์ข้อความที่นี่...\" class=\"form-control\">\n                            <button type=\"submit\" class=\"input-group-addon btn\">send</button>\n                        </div>\n                    </form>\n                </li>\n                <!-- <li class=\"list-group-item\" *ngFor=\"let cd of chatroomDetail\">\n                    <img [src]=\"cd.user_image\" style=\"width: 30px; height: 30px;\">{{ cd.user_name }} : {{ cd.message_detail }}\n                </li> -->\n                <li class=\"list-group-item\" *ngFor=\"let item of text\">\n                    {{ item }}\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/chat-room/chat-room.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_chat_rooms_service__ = __webpack_require__("../../../../../src/app/services/chat-rooms.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_socket_io_client__ = __webpack_require__("../../../../socket.io-client/lib/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_socket_io_client__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatRoomComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ChatRoomComponent = (function () {
+    function ChatRoomComponent(fb, chatRoomsService) {
+        this.fb = fb;
+        this.chatRoomsService = chatRoomsService;
+        this.chatroomDetail = [];
+        this.text = [];
+        this.message = this.fb.control("", __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required);
+        this.myForm = this.fb.group({
+            "message": this.message
+        });
+    }
+    ChatRoomComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.chatRoomsService.getChatRoom().subscribe(function (res) {
+            _this.chatroom = res;
+        });
+        this.socket = __WEBPACK_IMPORTED_MODULE_3_socket_io_client__["connect"]("http://sittikiat.streetfood.in.th:1111");
+        this.socket.on("every", function (message) {
+            var text = message.socket_id + ": " + message.data;
+            _this.text.push(text);
+            // mysql
+            // let message_detail = message.data;
+            // this.chatRoomsService.postMessage(message_detail, "0.00", 1, this.chat_room_id).subscribe(
+            //   res => {
+            //     console.log("insert ok");
+            //   }
+            // )
+            _this.myForm.reset();
+        });
+    };
+    ChatRoomComponent.prototype.goDetail = function (id) {
+        var _this = this;
+        this.chat_room_id = id;
+        this.chatRoomsService.getChatRoomDetail(id).subscribe(function (res) {
+            _this.chatroomDetail = res;
+            console.log(_this.chatroomDetail);
+        });
+    };
+    ChatRoomComponent.prototype.send = function () {
+        var message = this.myForm.value.message;
+        this.socket.emit("message", message);
+    };
+    return ChatRoomComponent;
+}());
+ChatRoomComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+        selector: 'app-chat-room',
+        template: __webpack_require__("../../../../../src/app/components/chat-room/chat-room.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/components/chat-room/chat-room.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormBuilder */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_chat_rooms_service__["a" /* ChatRoomsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_chat_rooms_service__["a" /* ChatRoomsService */]) === "function" && _b || Object])
+], ChatRoomComponent);
+
+var _a, _b;
+//# sourceMappingURL=chat-room.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/doc/doc.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -319,7 +432,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/doc/doc.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n<div class=\"row\">\n  <div class=\"col-md-12\">\n    <h1 class=\"display-2\">API</h1>\n    <div class=\"card\">\n      <h3>Genres</h3>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึง Genres ทั้งหมด</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/genres</b>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>genre_id</b> รหัสหมวดหมู่</li>\n            <li><b>genre_name</b> ชื่อหมวดหมู่</li>\n            <li><b>genre_pic</b> รูปภาพหมวดหมู่</li>\n          </ul>\n      </div>\n    </div>\n  </div>\n</div>\n<br>\n<br>\n<div class=\"row\">\n  <div class=\"col-md-12\">\n    <div class=\"card\">\n      <h3>Albums</h3>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึง Albums ทั้งหมด</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/albums</b>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>album_id</b> รหัสอัลบั้ม</li>\n            <li><b>album_name</b> ชื่ออัลบั้ม</li>\n            <li><b>album_pic</b> รูปภาพอัลบั้ม</li>\n          </ul>\n      </div>\n      <hr>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึงเฉพาะบาง Album</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/album/:id</b>\n        <p>ต้องการ id ของ album</p>\n        <b>ตัวอย่าง</b>\n        <p>http://sittikiat.streetfood.in.th:1111/api/album/1</p>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>song_id</b> รหัสเพลง</li>\n            <li><b>song_name</b> ชื่อเพลง</li>\n            <li><b>song_file</b> ไฟล์เพลง</li>\n            <li><b>song_pic</b> รูปภาพเพลง</li>\n            <li><b>artist_id</b> รหัสศิลปิน</li>\n            <li><b>album_id</b> รหัสอัลบั้ม</li>\n            <li><b>album_name</b> ชื่ออัลบั้ม</li>\n            <li><b>album_pic</b> รูปภาพอัลบั้ม</li>\n            <li><b>genre_id</b> รหัสหมวดหมู่</li>\n          </ul>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n</div>"
+module.exports = "<div class=\"container\">\n<div class=\"row\">\n  <div class=\"col-md-12\">\n    <h1 class=\"display-2\">API</h1>\n    <div class=\"card\">\n      <h3>Genres</h3>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึง Genres ทั้งหมด</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/genres</b>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>genre_id</b> รหัสหมวดหมู่</li>\n            <li><b>genre_name</b> ชื่อหมวดหมู่</li>\n            <li><b>genre_pic</b> รูปภาพหมวดหมู่</li>\n          </ul>\n      </div>\n    </div>\n  </div>\n</div>\n<br>\n<br>\n<div class=\"row\">\n  <div class=\"col-md-12\">\n    <div class=\"card\">\n      <h3>Albums</h3>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึง Albums ทั้งหมด</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/albums</b>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>album_id</b> รหัสอัลบั้ม</li>\n            <li><b>album_name</b> ชื่ออัลบั้ม</li>\n            <li><b>album_pic</b> รูปภาพอัลบั้ม</li>\n          </ul>\n      </div>\n      <hr>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึงเฉพาะบาง Album</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/album/:id</b>\n        <p>ต้องการ id ของ album</p>\n        <b>ตัวอย่าง</b>\n        <p>http://sittikiat.streetfood.in.th:1111/api/album/1</p>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>song_id</b> รหัสเพลง</li>\n            <li><b>song_name</b> ชื่อเพลง</li>\n            <li><b>song_file</b> ไฟล์เพลง</li>\n            <li><b>song_pic</b> รูปภาพเพลง</li>\n            <li><b>artist_id</b> รหัสศิลปิน</li>\n            <li><b>album_id</b> รหัสอัลบั้ม</li>\n            <li><b>album_name</b> ชื่ออัลบั้ม</li>\n            <li><b>album_pic</b> รูปภาพอัลบั้ม</li>\n            <li><b>genre_id</b> รหัสหมวดหมู่</li>\n          </ul>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-md-12\">\n    <div class=\"card\">\n      <h3>Stream Chat</h3>\n      <div class=\"card-body\">\n        <p>IOS</p>\n        <p>Ref: https://socket.io/blog/socket-io-on-ios/</p>\n      </div>\n      <div class=\"card\">\n          วิธีการ Connect ใช้ http://sittikiat.streetfood.in.th:1111\n          <p>\n            การส่งไปหา Server\n              - socket.emit(\"message\", ข้อมูล)\n            การรับจาก Server\n              - socket.on(\"every\", callback)\n          </p>\n      </div>\n      <hr>\n      <div class=\"card-body\">\n        <p>GET</p>\n        <p>ดึงเฉพาะบาง Album</p>\n        <b>http://sittikiat.streetfood.in.th:1111/api/album/:id</b>\n        <p>ต้องการ id ของ album</p>\n        <b>ตัวอย่าง</b>\n        <p>http://sittikiat.streetfood.in.th:1111/api/album/1</p>\n      </div>\n      <div class=\"card\">\n          Response\n          <ul>\n            <li><b>song_id</b> รหัสเพลง</li>\n            <li><b>song_name</b> ชื่อเพลง</li>\n            <li><b>song_file</b> ไฟล์เพลง</li>\n            <li><b>song_pic</b> รูปภาพเพลง</li>\n            <li><b>artist_id</b> รหัสศิลปิน</li>\n            <li><b>album_id</b> รหัสอัลบั้ม</li>\n            <li><b>album_name</b> ชื่ออัลบั้ม</li>\n            <li><b>album_pic</b> รูปภาพอัลบั้ม</li>\n            <li><b>genre_id</b> รหัสหมวดหมู่</li>\n          </ul>\n      </div>\n    </div>\n    \n  </div>\n</div>\n\n\n</div>"
 
 /***/ }),
 
@@ -413,7 +526,6 @@ var HomeComponent = (function () {
         var _this = this;
         this.genresService.getGenres().subscribe(function (res) {
             _this.genres = res;
-            console.log(_this.genres);
         }, function (err) { return console.log(err); }, function () { return console.log("success"); });
     };
     return HomeComponent;
@@ -453,7 +565,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/shared/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">\n  <a class=\"navbar-brand\" routerLink=\"\">True music</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" aria-controls=\"navbarNav\" aria-expanded=\"false\"\n    aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"\">Home</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"albums\">Albums</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"doc\">Documents</a>\n      </li>\n    </ul>\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">\n  <a class=\"navbar-brand\" routerLink=\"\">True music</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" aria-controls=\"navbarNav\" aria-expanded=\"false\"\n    aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"\">Home</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"albums\">Albums</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"chatroom\">Chatroom</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"doc\">Documents</a>\n      </li>\n    </ul>\n  </div>\n</nav>"
 
 /***/ }),
 
@@ -570,6 +682,62 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/chat-rooms.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/add/operator/catch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatRoomsService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ChatRoomsService = (function () {
+    function ChatRoomsService(http) {
+        this.http = http;
+        this.url = "http://localhost:1111/api";
+    }
+    ChatRoomsService.prototype.getChatRoom = function () {
+        return this.http.get(this.url + "/chat_rooms").map(function (res) { return res.json(); });
+    };
+    ChatRoomsService.prototype.getChatRoomDetail = function (id) {
+        return this.http.get(this.url + "/chat_room/" + id).map(function (res) { return res.json(); });
+    };
+    ChatRoomsService.prototype.postMessage = function (message_detail, message_created, user_id, chat_room_id) {
+        var body = {
+            "message_detail": message_detail,
+            "message_created": message_created,
+            "user_id": user_id,
+            "chat_room_id": chat_room_id
+        };
+        return this.http.post(this.url + "/message", body).map(function (res) { return res.json(); });
+    };
+    return ChatRoomsService;
+}());
+ChatRoomsService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object])
+], ChatRoomsService);
+
+var _a;
+//# sourceMappingURL=chat-rooms.service.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/genres.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -659,6 +827,13 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 /***/ }),
 
 /***/ 0:
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("../../../../../src/main.ts");
@@ -666,5 +841,5 @@ module.exports = __webpack_require__("../../../../../src/main.ts");
 
 /***/ })
 
-},[0]);
+},[1]);
 //# sourceMappingURL=main.bundle.js.map
